@@ -2,7 +2,7 @@
   "private": true,
   "workspaces": [
     "safecoder-agent",
-    "frontend"
+    "frontend/vscode"
   ],
   "engines": {
     "node": ">=18"
