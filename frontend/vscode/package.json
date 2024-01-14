@@ -1,0 +1,358 @@
+{
+  "name": "safeCoder",
+  "publisher": "walle-ai",
+  "displayName": "safeCoder",
+  "description": "safeCoder is a self-hosted AI coding assistant that can suggest multi-line code or full functions in real-time.",
+  "license": "Apache-2.0",
+  "version": "1.0.5",
+  "keywords": [
+    "ai",
+    "autocomplete",
+    "code completion",
+    "copilot",
+    "intellisense",
+    "intellicode",
+    "snippets"
+  ],
+  "icon": "assets/logo.jpg",
+  "engines": {
+    "vscode": "^1.82.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Machine Learning",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/node/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "safecoder.toggleInlineCompletionTriggerMode",
+        "title": "safeCoder: Toggle Code Completion Trigger Mode (Automatic/Manual)"
+      },
+      {
+        "command": "safecoder.inlineCompletion.trigger",
+        "title": "safeCoder: Trigger Code Completion Manually"
+      },
+      {
+        "command": "safecoder.setApiEndpoint",
+        "title": "safeCoder: Specify API Endpoint of safeCoder Serve"
+      },
+      {
+        "command": "safecoder.openSettings",
+        "title": "safeCoder: Open Settings"
+      },
+      {
+        "command": "safecoder.openTabbyAgentSettings",
+        "title": "safeCoder: Open Tabby Agent Settings"
+      },
+      {
+        "command": "safecoder.gettingStarted",
+        "title": "safeCoder: Getting Started"
+      },
+      {
+        "command": "safecoder.explain_this_code",
+        "title": "解释 这段代码",
+        "category": "safeCoder"
+      },
+      {
+        "command": "safecoder.improve_this_code",
+        "title": "优化 这段代码",
+        "category": "safeCoder"
+      },
+      {
+        "command": "safecoder.clean_this_code",
+        "title": "清理 这段代码",
+        "category": "safeCoder"
+      },
+      {
+        "command": "safecoder.generate_comment",
+        "title": "生成 注释",
+        "category": "safeCoder"
+      },
+      {
+        "command": "safecoder.generate_unit_test",
+        "title": "生成 单元测试",
+        "category": "safeCoder"
+      },
+      {
+        "command": "safecoder.check_performance",
+        "title": "检查 性能问题",
+        "category": "safeCoder"
+      },
+      {
+        "command": "safecoder.check_security",
+        "title": "检查 安全性问题",
+        "category": "safeCoder"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "safecoder_context_submenu",
+        "label": "safeCoder"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "submenu": "safecoder_context_submenu",
+          "group": "navigation"
+        }
+      ],
+      "safecoder_context_submenu": [
+        {
+          "command": "safecoder.explain_this_code",
+          "group": "group2@1",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "safecoder.improve_this_code",
+          "group": "group2@2",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "safecoder.clean_this_code",
+          "group": "group2@3",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "safecoder.generate_comment",
+          "group": "group3@1",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "safecoder.generate_unit_test",
+          "group": "group3@2",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "safecoder.check_performance",
+          "group": "group4@1",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "safecoder.check_security",
+          "group": "group4@2",
+          "when": "editorHasSelection"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "safecoder.inlineCompletion.trigger",
+          "when": "config.safecoder.inlineCompletion.triggerMode === 'manual' && !editorHasSelection && !inlineSuggestionsVisible"
+        },
+        {
+          "command": "safecoder.openTabbyAgentSettings",
+          "when": "!isWeb"
+        }
+      ]
+    },
+    "walkthroughs": [
+      {
+        "id": "gettingStarted",
+        "title": "Getting Started with safecoder",
+        "description": "Set up your own AI coding assistant",
+        "steps": [
+          {
+            "id": "getTabbyServerReady",
+            "title": "Get Tabby Server Ready",
+            "description": "The  VSCode extension requires a Tabby server to work. Please follow this guide to get your Tabby server ready.",
+            "media": {
+              "markdown": "assets/walkthroughs/server.md"
+            }
+          },
+          {
+            "id": "connectToTabbyServer",
+            "title": "Connect to Tabby Server",
+            "description": "Once your safecoder server is ready, specify the server API endpoint here. \n[Specify API Endpoint](command:safecoder.setApiEndpoint)",
+            "media": {
+              "markdown": "assets/walkthroughs/setApiEndpoint.md"
+            }
+          },
+          {
+            "id": "codeCompletion",
+            "title": "Code Completion",
+            "description": "safecoder provides inline suggestions automatically by default, and you can accept suggestions by just pressing the Tab key.",
+            "media": {
+              "markdown": "assets/walkthroughs/codeCompletion.md"
+            }
+          },
+          {
+            "id": "commands",
+            "title": "Commands",
+            "description": "Type `>safecoder:` in command palette to list all safeCoder commands. \n[safecoder commands](command:workbench.action.quickOpen?%5B%22%3Esafecoder%3A%22%5D)",
+            "media": {
+              "markdown": "assets/walkthroughs/commands.md"
+            }
+          }
+        ]
+      }
+    ],
+    "configuration": {
+      "title": "safeCoder",
+      "properties": {
+        "safecoder.api.endpoint": {
+          "type": "string",
+          "default": "",
+          "pattern": "(^$)|(^https?:\\/\\/\\S+$)",
+          "patternErrorMessage": "Please enter a validate http or https URL.",
+          "markdownDescription": "Specify API Endpoint of safecoder.  \nIf leave empty, server endpoint in [safecoder Agent Settings](command:tabby.openTabbyAgentSettings) will be used."
+        },
+        "safecoder.api.chat.models": {
+          "type": "string",
+          "enum": [
+            "gpt-3.5-turbo-16k",
+            "safecoder",
+            "wizarcoder",
+            "starcoder",
+            "codeshell"
+          ],
+          "default": "gpt-3.5-turbo-16k",
+          "markdownDescription": "Specify API Endpoint of Chat safecoder"
+        },
+        "safecoder.api.chat.endpoint": {
+          "type": "string",
+          "default": "",
+          "pattern": "(^$)|(^https?:\\/\\/\\S+$)",
+          "patternErrorMessage": "Please enter a validate http or https URL.",
+          "markdownDescription": "Specify API Endpoint of Chat safecoder"
+        },
+        "safecoder.api.chat.chatMaxTokens": {
+          "type": "number",
+          "default": 4096,
+          "maximum": 8000,
+          "minimum": 1024,
+          "markdownDescription": "chatMaxTokens numbers"
+        },
+        "safecoder.api.chat.websearch": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "web search"
+        },
+        "safecoder.inlineCompletion.triggerMode": {
+          "type": "string",
+          "enum": [
+            "automatic",
+            "manual"
+          ],
+          "default": "automatic",
+          "description": "Select the code completion trigger mode.",
+          "enumDescriptions": [
+            "Automatic trigger when you stop typing",
+            "Manual trigger by pressing `Alt + \\`"
+          ]
+        },
+        "safecoder.keybindings": {
+          "type": "string",
+          "enum": [
+            "vscode-style",
+            "tabby-style"
+          ],
+          "default": "vscode-style",
+          "markdownDescription": "Select the keybinding profile to accept shown inline completion. \n | | Next Line | Full Completion | Next Word | \n |:---:|:---:|:---:|:---:| \n | _vscode-style_ | - | Tab | Ctrl + RightArrow | \n | _tabby-style_ <br/> _(experimental)_ | Tab | Ctrl + Tab | Ctrl + RightArrow | \n"
+        },
+        "safecoder.usage.anonymousUsageTracking": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable anonymous usage tracking."
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "key": "alt+\\",
+        "command": "safecoder.inlineCompletion.trigger",
+        "when": "config.tabby.inlineCompletion.triggerMode === 'manual' && editorTextFocus && !editorHasSelection && !inlineSuggestionsVisible"
+      },
+      {
+        "command": "safecoder.inlineCompletion.accept",
+        "key": "tab",
+        "when": "config.tabby.keybindings === 'vscode-style' && inlineSuggestionVisible && !editorReadonly && !suggestWidgetVisible && !editorHoverFocused && !editorTabMovesFocus && inlineSuggestionHasIndentationLessThanTabSize"
+      },
+      {
+        "command": "safecoder.inlineCompletion.acceptNextWord",
+        "key": "ctrl+right",
+        "when": "config.tabby.keybindings === 'vscode-style' && inlineSuggestionVisible && !editorReadonly && !suggestWidgetVisible"
+      },
+      {
+        "command": "safecoder.inlineCompletion.accept",
+        "key": "ctrl+tab",
+        "when": "config.tabby.keybindings === 'tabby-style' && inlineSuggestionVisible && !editorReadonly && !suggestWidgetVisible"
+      },
+      {
+        "command": "safecoder.inlineCompletion.acceptNextWord",
+        "key": "ctrl+right",
+        "when": "config.tabby.keybindings === 'tabby-style' && inlineSuggestionVisible && !editorReadonly && !suggestWidgetVisible"
+      },
+      {
+        "command": "safecoder.inlineCompletion.acceptNextLine",
+        "key": "tab",
+        "when": "config.tabby.keybindings === 'tabby-style' && inlineSuggestionVisible && !editorReadonly && !suggestWidgetVisible && !editorHoverFocused && !editorTabMovesFocus"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "safecoder_sidebar",
+          "title": "safeCoder",
+          "icon": "assets/logo.svg"
+        }
+      ]
+    },
+    "views": {
+      "safecoder_sidebar": [
+        {
+          "id": "safecoder.chatView",
+          "name": "safeCoder",
+          "type": "webview"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsup --minify --treeshake smallest",
+    "watch": "tsup --sourcemap --watch ./ --ignore-watch ./dist --watch ../safecoder-agent/dist",
+    "dev": "code --extensionDevelopmentPath=$PWD --disable-extensions && yarn watch",
+    "dev:browser": "vscode-test-web --extensionDevelopmentPath=$PWD --browserType=chromium --port=3000 && yarn watch",
+    "lint": "prettier --write .",
+    "vscode:prepackage": "yarn build",
+    "vscode:package": "vsce package --no-dependencies",
+    "vscode:prepublish": "yarn build",
+    "vscode:publish": "vsce publish --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.70.0",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "@vscode/test-electron": "^2.1.5",
+    "@vscode/test-web": "^0.0.44",
+    "@vscode/vsce": "^2.15.0",
+    "assert": "^2.0.0",
+    "esbuild-plugin-polyfill-node": "^0.3.0",
+    "eslint": "^8.20.0",
+    "glob": "^8.0.3",
+    "ofetch": "^1.3.3",
+    "prettier": "^3.0.0",
+    "tsup": "^7.1.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@epic-web/cachified": "^4.0.0",
+    "@xstate/fsm": "^2.0.1",
+    "axios": "^1.5.0",
+    "dom-parser": "^1.1.5",
+    "duckduckgo-search": "^1.0.7",
+    "eventsource-parser": "^1.1.1",
+    "jsdom": "^23.2.0",
+    "lodash-es": "^4.17.21",
+    "node-fetch": "^3.3.2",
+    "ofetch": "^1.3.3",
+    "safecoder-agent": "0.2.0"
+  }
+}
